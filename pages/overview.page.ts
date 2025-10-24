@@ -15,6 +15,12 @@ export class OverviewPage {
     readonly trendingCarousel: Locator;
     readonly eventsCarousel: Locator;
     readonly catlistCardImage: Locator;
+    readonly listicleCardImage: Locator;
+    readonly createOrEditWishlistModalTitleInput: Locator;
+    readonly createWishlistSubmitButton: Locator;
+    readonly createWishlistAddAdditionalDetailsButton: Locator;
+    readonly createWishlistSharedSelectionDropdown: Locator;
+    readonly createWishlistSharedSelectionHiddenOption: Locator;
 
     // Expected regexes
     readonly expectedWishlistCarouselText = /My wishlists/;
@@ -36,6 +42,12 @@ export class OverviewPage {
         this.trendingCarousel = page.getByTestId('carouselContainer').nth(4);
         this.eventsCarousel = page.getByTestId('carouselContainer').nth(5);
         this.catlistCardImage = page.getByTestId('wl-Catlist')
+        this.listicleCardImage = page.getByTestId('wl-Listicle');
+        this.createOrEditWishlistModalTitleInput = page.getByTestId('create-wishlist-title-input');
+        this.createWishlistSubmitButton = page.getByTestId('createWishlistSubmitButton');
+        this.createWishlistAddAdditionalDetailsButton = page.getByText('Add additional details');
+        this.createWishlistSharedSelectionDropdown = page.getByText('Shared');
+        this.createWishlistSharedSelectionHiddenOption = page.getByText('Hidden').nth(1);
     }
 
     async goto() {
@@ -46,6 +58,19 @@ export class OverviewPage {
     async clickOnCatlistCard() {
         await this.catlistCardImage.click()
         await this.page.waitForURL('https://onskeskyen.dk/wishlists**')
+    }
+
+    async fillCreateOrEditWishlistInput(wishlistName: string) {
+        await this.createOrEditWishlistModalTitleInput.fill(wishlistName)
+    }
+
+    async setCreatedWishlistVisibilityToHidden() {
+        await this.createWishlistSharedSelectionDropdown.click()
+        await this.createWishlistSharedSelectionHiddenOption.click({ force: true })
+    }
+
+    async verifyListicleWishlistCard() {
+        await expect(this.listicleCardImage).toBeVisible()
     }
 
     async verifyHeaderAndButtons() {
