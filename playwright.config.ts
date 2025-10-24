@@ -34,20 +34,22 @@ export default defineConfig({
     trace: 'on',
     video: 'on',
   },
+  globalSetup: require.resolve('./global-setup'),
 
   /* Configure projects for major browsers */
   projects: [
     {
-        name: 'login',
-        testMatch: /.*\.login\.ts/
+        name: 'setup',
+        testMatch: /global\.setup\.ts/,
     },
     {
       name: 'chromium',
+      testMatch: /.*\.ts/,
       use: { 
           ...devices['Desktop Chrome'],
           storageState: '.auth/storageState.json',
       },
-      dependencies: ['login'],
+      dependencies: ['setup'],
     },
     /*
     {
@@ -89,4 +91,7 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+  expect: {
+    timeout: 20_000,
+  }
 });
