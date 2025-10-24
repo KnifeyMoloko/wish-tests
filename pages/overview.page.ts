@@ -14,6 +14,7 @@ export class OverviewPage {
     readonly brandsCarousel: Locator;
     readonly trendingCarousel: Locator;
     readonly eventsCarousel: Locator;
+    readonly catlistCardImage: Locator;
 
     // Expected regexes
     readonly expectedWishlistCarouselText = /My wishlists/;
@@ -34,11 +35,17 @@ export class OverviewPage {
         this.brandsCarousel = page.getByTestId('carouselContainer').nth(3);
         this.trendingCarousel = page.getByTestId('carouselContainer').nth(4);
         this.eventsCarousel = page.getByTestId('carouselContainer').nth(5);
+        this.catlistCardImage = page.getByTestId('wl-Catlist')
     }
 
     async goto() {
         await this.page.goto(this.url);
         await this.page.waitForURL(this.url, { waitUntil: 'load' });
+    }
+
+    async clickOnCatlistCard() {
+        await this.catlistCardImage.click()
+        await this.page.waitForURL('https://onskeskyen.dk/wishlists**')
     }
 
     async verifyHeaderAndButtons() {
